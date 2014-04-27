@@ -1,15 +1,35 @@
-## Put comments here that give an overall description of what your
-## functions do
+## These functions help to reduce time spent computing
+## inverse of the matrix when there is a need
+## to find the inverse for the same matrix more than one time
 
-## Write a short comment describing this function
+## This function creates ant object, which contains matrix and its inverse
 
 makeCacheMatrix <- function(x = matrix()) {
+  i <- NULL
+  set <- function(y) {
+    x <<- y
+    i <<- NULL
+  }
+  get <- function() x
+  setinverse <- function(solve) i <<- solve
+  getinverse <- function() i
+  list(set = set, get = get,
+       setinverse = setinverse,
+       getinverse = getinverse)}
 
-}
 
-
-## Write a short comment describing this function
+## This function returns the inverse of the matrix from the object
+## ceated by the makeCacheMatrix. If there are no inverse in the object
+## mentioned above, then the inverse is computed and returned.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+   i <- x$getinverse()
+  if(!is.null(i)) {
+    message("getting cached data")
+    return(i)
+  }
+  data <- x$get()
+  i <- solve(data, ...)
+  x$setinverse(i)
+  i
 }
